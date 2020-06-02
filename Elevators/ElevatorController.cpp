@@ -96,7 +96,7 @@ void ElevatorController::summonButtonPushed(int summoningFloor, Direction direct
  */
 void ElevatorController::floorButtonPushed(int destinationFloor)
 {
-	floors[destinationFloor].CabinButton->SetIsActivated(true);
+	if (currentRoute != Direction::None || currentFloor != destinationFloor) floors[destinationFloor].CabinButton->SetIsActivated(true);
 	selectNextFloor();
 }
 
