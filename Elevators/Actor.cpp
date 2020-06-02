@@ -6,13 +6,13 @@
 
 //Default Constructor
 Actor::Actor()
-	: position({ 0.f, 0.f }), velocity({0.f, 0.f}), w(0.f), h(0.f), bIsPendingKill(false)
+	: Actor(0.f, 0.f, 0.f, 0.f, 0)
 {
 }
 
 //Parameterized Constructor
 Actor::Actor(float inX, float inY, float inW, float inH)
-	: position({ inX, inY }), velocity({ 0.f, 0.f }), w(inW), h(inH), bIsPendingKill(false)
+	: Actor(inX, inY, inW, inH, 0)
 {
 }
 
@@ -32,28 +32,27 @@ void Actor::render(Renderer& renderer)
 	//default behavior can be added here
 }
 
-
 //Returns the center of the actor
-Vector2 Actor::getCenter()
+Vector2 Actor::getCenter() const
 {
 	return Vector2(position.x + w / 2, position.y + h / 2);
 }
 
 //Returns the top left corner of the collision box
-Vector2 Actor::getBoundingRectTopLeft()
+Vector2 Actor::getBoundingRectTopLeft() const
 {
 	return position;
 }
 
 //Returns the bottom right corner of the collision box
-Vector2 Actor::getBoundingRectBottomRight()
+Vector2 Actor::getBoundingRectBottomRight() const
 {
 	return Vector2(position.x + w, position.y + h);
 }
 
 
 //Simple collision check, returns true (colliding) or false (not colliding)
-bool Actor::CheckCollision(Actor* const otherActor, float timeStep)
+bool Actor::CheckCollision(Actor* const otherActor, float timeStep) const
 {
 	Vector2 ignoreHitPoint;
 	Vector2 ignoreNormal;
@@ -61,12 +60,13 @@ bool Actor::CheckCollision(Actor* const otherActor, float timeStep)
 	return CheckCollision(otherActor, timeStep, ignoreHitPoint, ignoreNormal, ignoreRatio);
 }
 
+
 //Full collision check, returns true/false plus location of hit, normal of hit surface, sweeping ratio
-bool Actor::CheckCollision(Actor* const otherActor, float timeStep, Vector2& HitPoint, Vector2& outNormal, float& outRatio)
+bool Actor::CheckCollision(Actor* const otherActor, float timeStep, Vector2& HitPoint, Vector2& outNormal, float& outRatio) const
 {
 
 	//scale the velocity according to the current timeStep
-	Vector2 scaledVelocity = velocity * timeStep;
+	Vector2 scaledVelocity = timeStep * velocity;
 
 	//Quick proximity check, saves performance
 	if ((getCenter() - otherActor->getCenter()).length() > (scaledVelocity.length() + std::max(w, h)/2 + std::max(otherActor->getWidth(), otherActor->getHeight()) / 2) * 1.1f) return false;

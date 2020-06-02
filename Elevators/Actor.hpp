@@ -12,6 +12,7 @@ public:
 	Actor();
 	Actor(float inX, float inY, float inW, float inH);
 	Actor(float inX, float inY, float inW, float inH, unsigned int inZIndex);
+	virtual ~Actor() {};
 
 protected:
 	Vector2 velocity;
@@ -28,13 +29,13 @@ public:
 	virtual void render(Renderer& renderer);
 
 	//GETTERS
-	Vector2 getPosition() { return position; };
-	Vector2 getCenter();
-	float getWidth() { return w; };
-	float getHeight() { return h; };
-	Vector2 getVelocity() { return velocity; };
-	virtual Vector2 getBoundingRectTopLeft();
-	virtual Vector2 getBoundingRectBottomRight();
+	Vector2 getPosition() const { return position; };
+	Vector2 getCenter() const;
+	float getWidth() const { return w; };
+	float getHeight() const { return h; };
+	Vector2 getVelocity() const { return velocity; };
+	virtual Vector2 getBoundingRectTopLeft() const;
+	virtual Vector2 getBoundingRectBottomRight() const;
 	unsigned int getRenderOrder() const { return zIndex; };
 
 	//SETTERS
@@ -43,8 +44,8 @@ public:
 	void setHeight(float inH) { h = inH; };
 
 	//Collision
-	bool CheckCollision(Actor* const otherActor, float timeStep);
-	bool CheckCollision(Actor* const otherActor, float timeStep, Vector2& HitPoint, Vector2& outNormal, float& outRatio);
+	bool CheckCollision(Actor* const otherActor, float timeStep) const;
+	bool CheckCollision(Actor* const otherActor, float timeStep, Vector2& HitPoint, Vector2& outNormal, float& outRatio) const;
 	
 	//Mouse Events
 	virtual void onClick();
